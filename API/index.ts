@@ -13,10 +13,6 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, World!");
-});
-
 app.use("/api", require("./routers/API"));
 app.use("/auth", require("./routers/Auth"));
 
