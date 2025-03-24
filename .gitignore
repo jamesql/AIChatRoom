@@ -141,3 +141,6 @@ dist
 **/dist
 **/build
 **/coverage
+
+.env
+.DS_Store
