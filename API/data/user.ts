@@ -40,6 +40,12 @@ class UserService {
             where: { id },
         });
     }
+
+    async getUserByUsername(username: string): Promise<User | null> {
+        return await prisma.user.findFirst({
+            where: { name: username },
+        });
+    }
 }
 
-export default UserService;
+export default new UserService;
