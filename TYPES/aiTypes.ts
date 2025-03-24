@@ -2,7 +2,7 @@ export default interface AIUser {
     id: string;
     name: string;
     avatar: string;
-    gamesPlayed: number;
+    gamesplayed: number;
     gamesWon: number;
     gamesLost: number;
 }
