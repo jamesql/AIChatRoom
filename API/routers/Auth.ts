@@ -2,6 +2,8 @@ import express, {Router,  Express, Request, Response } from "express";
 import User from "../../TYPES/userTypes";
 import UserService from "../data/user";
 import { env } from "process";
+import { redisInstance } from "../data/redis";
+import { UserSession } from "../../TYPES/socketTypes";
 const { body, validationResult, header } = require("express-validator");
 
 const bcrypt = require("bcrypt");
@@ -63,6 +65,16 @@ router.post("/login", [
         res.status(401).json({ error: "Invalid password." });
         return;
     }
+
+    redisInstance.set(`user:${user.id}`, JSON.stringify({
+        user: user,
+        isInLobby: false,
+        isHost: false,
+        isInGame: false,
+        isInPublicMatchmaking: false,
+        lobbyId: null,
+
+    } as UserSession));
 
     res.status(200).json(user);
     return;

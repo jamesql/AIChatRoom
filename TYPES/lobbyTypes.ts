@@ -1,18 +1,40 @@
 import AIUser from "./aiTypes";
 import User from "./userTypes";
 
-export class Lobby {
-    id: string;
-    name: string;
-    users: User[];
-    AIUser: AIUser[];
-    messages: Message[];
-}
+export type LobbyStatus = 'waiting' | 'prompt' | 'voter' | 'finished';
 
-export class Message {
+export interface Prompt {
     id: string;
+    question: string;
+} 
+
+export interface Answer {
+    id: string;
+    answer: string;
     user: User | AIUser;
-    content: string;
-    timestamp: Date;
+    question: Prompt;
     lobby: Lobby;
 }
+
+export interface Vote {
+    id: string;
+    votesFor: Answer[];
+    user: User;
+}
+
+export interface LobbyRound {
+    id: string;
+    round: number;
+    question: Prompt;
+    answers: Answer[];
+    lobby: Lobby;
+
+}
+
+export interface Lobby {
+    id: string;
+    users: User[];
+    aIUsers: AIUser;
+    rounds: LobbyRound[];
+}
+

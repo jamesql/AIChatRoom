@@ -1,6 +1,7 @@
 import AIUser from './aiTypes';
-import { Lobby, Message } from './lobbyTypes';
+import { Prompt, Answer, LobbyRound, Lobby, Vote, LobbyStatus } from './lobbyTypes';
 import User from './userTypes';
+import * as Socket from './socketTypes';
 
 
 
@@ -8,5 +9,10 @@ export {
     User,
     AIUser,
     Lobby,
-    Message
+    LobbyRound,
+    Prompt,
+    Answer,
+    Vote,
+    LobbyStatus,
+    Socket
 }
