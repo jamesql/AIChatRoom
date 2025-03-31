@@ -18,7 +18,7 @@ export interface Answer {
 
 export interface Vote {
     id: string;
-    votesFor: Answer[];
+    votesFor: Answer;
     user: User;
 }
 
@@ -28,13 +28,15 @@ export interface LobbyRound {
     question: Prompt;
     answers: Answer[];
     lobby: Lobby;
+    votes: Vote[];
 
 }
 
 export interface Lobby {
     id: string;
     users: User[];
-    aIUsers: AIUser;
+    aiUser: AIUser;
     rounds: LobbyRound[];
+    host: User;
 }
 

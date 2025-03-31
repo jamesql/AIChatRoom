@@ -1,4 +1,4 @@
-import { Lobby } from "./lobbyTypes";
+import { Answer, Lobby, Prompt, Vote } from "./lobbyTypes";
 import User from "./userTypes";
 
 export interface UserSession {
@@ -89,7 +89,7 @@ export interface StartGamePacket {
 export interface PromptPacket {
     op: OPCode;
     d: {
-        prompt: string; // Prompt question
+        prompt: Prompt; // Prompt question
         lobby: Lobby; // ID of the lobby
     }
 }
@@ -97,18 +97,17 @@ export interface PromptPacket {
 export interface SubmitPromptResponsePacket {
     op: OPCode;
     d: {
-        response: string; // Response to the prompt
-        lobby: Lobby; // ID of the lobby
-        user: User; // User information
+        lobby: Lobby;
+        prompt: Prompt;
+        answers: Answer[];
     }
 }
 
 export interface VoteResponsePacket {
     op: OPCode;
     d: {
-        responseId: string; // ID of the response to vote for
-        lobby: Lobby; // ID of the lobby
-        user: User; // User information
+        lobby: Lobby;
+        votes: Vote[];
     }
 }
 
@@ -116,7 +115,6 @@ export interface EndGamePacket {
     op: OPCode;
     d: {
         lobby: Lobby; // ID of the lobby
-        user: User; // User information
     }
 }
 
