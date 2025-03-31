@@ -1,10 +1,13 @@
 import React from 'react';
+import classes from '../styles/lobby.module.css';
+import NavigationBar from '@/components/NavigationBar';
+import CurrentPlayers from '@/components/CurrentPlayers';
 
 const LobbyDev: React.FC = () => {
     return (
-        <div>
-            <h1>Welcome to the Lobby</h1>
-            <p>This is the development version of the lobby page.</p>
+        <div className={classes.container}>  
+            <NavigationBar authButtons={false} />
+            <CurrentPlayers players={[{ name: 'Player 1' }, { name: 'Player 2' }, { name: 'Player 3' }]} />
         </div>
     );
 };
