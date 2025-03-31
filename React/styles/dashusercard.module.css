@@ -1,0 +1,36 @@
+.dash_user_card {
+    min-width: 100vw;
+    width: 100vw;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    justify-content: space-around;
+    text-align: center;
+
+}
+
+@media screen and (max-width: 768px) {
+    .dash_user_card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .dash_user_card .avatar {
+        margin-bottom: 20px;
+    }
+    
+}
+
+.avatar img {
+	width: 128px;
+	height: 128px;
+	border-radius: 50%;
+	cursor: pointer;
+	position: relative;
+	transition: border-radius 128ms, background 128ms, color 128ms;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

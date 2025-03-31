@@ -39,33 +39,11 @@
 }
 
 .hero_content button {
-    background-color: var(--ucla-blue);
-    color: var(--gunmetal);
-    border: none;
+    margin-top: 20px;
     padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 20px;
-}
-
-.hero_content button a {
-    color: var(--gunmetal);
-    text-decoration: none;
-}
-
-.hero_content button a:hover {
-    color: var(--ucla-blue);
-}
-
-.hero_content button:hover {
-    background-color: var(--cadet-gray);
-    color: var(--ucla-blue);
-    transform: scale(1.05);
-}
-.hero_content button:active {
-    transform: scale(0.95);
-}
-.hero_content button:focus {
-    outline: none;
 }
