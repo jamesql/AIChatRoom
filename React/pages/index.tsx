@@ -7,7 +7,7 @@ export default function index() {
   return (
     <div className={classes.container}>
         <div className={classes.background}>
-        <NavigationBar />
+        <NavigationBar authButtons={true}/>
         <Hero title={"Welcome to Botify!"} 
         subtitle={"Unmask the Bot, Outsmart the AI, and Prove You Can Tell the Difference!"} 
         buttonText={"Get Started"} buttonLink={"/register"} />

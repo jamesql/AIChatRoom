@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import classes from '../styles/navbar.module.css';
 import Image from 'next/image';
 
-const NavigationBar: React.FC = () => {
+export interface NavigationBarProps {
+    authButtons: boolean;
+}
+
+const NavigationBar: React.FC<NavigationBarProps> = ({ authButtons }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const toggleMenu = () => {
@@ -10,7 +14,7 @@ const NavigationBar: React.FC = () => {
     };
 
     return (
-        <nav className={classes.navbar}>
+        <nav className={`${classes.navbar} ${authButtons ? '' : classes.navbar_no_buttons}`}>
             <div className={classes.navbar_header}>
                 <Image src={"/botify_logo.png"} alt='Botify' width={150} height={150}></Image>
                 <button className={classes.hamburger} onClick={toggleMenu}>
@@ -28,10 +32,10 @@ const NavigationBar: React.FC = () => {
                     <a href="/profile">Profile</a>
                 </li>
             </ul>
-            <div className={`${classes.nav_buttons} ${isMenuOpen ? classes.show : ''}`}>
+            {(authButtons===true) && (<div className={`${classes.nav_buttons} ${isMenuOpen ? classes.show : ''}`}>
                 <button>Login</button>
                 <button>Register</button>
-            </div>
+            </div>)}
         </nav>
     );
 };
