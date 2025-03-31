@@ -5,6 +5,11 @@
     grid-template-columns: 2fr 1fr 0.25fr;
 }
 
+.navbar_no_buttons {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
 .navbar ul {
     display: flex;
     flex-direction: row;
