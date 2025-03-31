@@ -1,10 +1,12 @@
+import Footer from '@/components/Footer';
+import NavigationBar from '@/components/NavigationBar';
 import React from 'react';
 
 const PromptDev: React.FC = () => {
     return (
         <div>
-            <h1>Welcome to the Prompt page</h1>
-            <p>This is the development version of the lobby page.</p>
+            <NavigationBar authButtons={false} />
+            <Footer />
         </div>
     );
 };
