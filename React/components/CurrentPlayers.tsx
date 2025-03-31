@@ -12,7 +12,7 @@ interface CurrentPlayersProps {
 const CurrentPlayers: React.FC<CurrentPlayersProps> = ({ players }) => {
     return (
         <div className={classes.container}>
-            <h2 className={classes.title}>Current Players</h2>
+            <h1 className={classes.title}>Current Players</h1>
             <ul className={classes.playerList}>
                 {players.map((player, index) => (
                     <li key={index} className={classes.playerItem}>
