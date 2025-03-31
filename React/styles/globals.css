@@ -16,7 +16,7 @@
 }
 body {
     font-family: 'Helvetica', 'Poppins', sans-serif;
-    background-color: var(--gunmetal);
+    background-color: black;
     color: var(--cadet-gray);
     line-height: 1.6;
 }
@@ -24,7 +24,7 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--ucla-blue);
 }
 a {
-    color: var(--ucla-blue);
+    color: var(--gunmetal);
     text-decoration: none;
 }
 a:hover {
@@ -35,9 +35,32 @@ a:hover {
 
 button {
     background-color: var(--ucla-blue);
-    color: var(--ucla-blue);
+    color: var(--gunmetal);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    background-color: var(--cadet-gray);
+    color: var(--ucla-blue);
+    transform: scale(1.05);
+}
+button:active {
+    transform: scale(0.95);
+}
+button:focus {
+    outline: none;
+}
+
+button a:hover {
+    /* Drop shadow */
+    text-shadow: 0 0 5px var(--ucla-blue);
+    color: var(--ucla-blue);
+    transition: all 0.3s ease;
+    /* Zoom */
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
