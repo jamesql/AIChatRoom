@@ -1,12 +1,22 @@
 import React from 'react';
 import classes from "../styles/hero.module.css";
 
-const Hero: React.FC = () => {
+export interface HeroProps {
+    title: string,
+    subtitle: string,
+    buttonText: string,
+    buttonLink: string
+}
+
+const Hero: React.FC<HeroProps> = ({ title, subtitle, buttonText, buttonLink }) => {
     return (
         <section className={classes.hero}>
-            <div className="container">
-                <h1 className="hero-title">Welcome to AI Chat Room</h1>
-                <p className="hero-description">Connect, chat, and collaborate with ease.</p>
+            <div className={classes.hero_content}>
+                <h1>{title}</h1>
+                <p>{subtitle}</p>
+                <button>
+                    <a href={buttonLink}>{buttonText}</a>
+                </button>
             </div>
         </section>
     );
