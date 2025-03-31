@@ -1,0 +1,121 @@
+/**/
+
+.navbar {
+    display: grid;
+    grid-template-columns: 2fr 1fr 0.25fr;
+}
+
+.navbar ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    align-items: center;
+}
+.navbar ul li {
+    margin: 0 10px;
+    padding: 10px 20px;
+    text-align: center;
+
+}
+.navbar ul li a {
+    color: var(--ucla-blue);
+    text-decoration: none;
+}
+.navbar ul li a:hover {
+    /* Drop shadow */
+    text-shadow: 0 0 5px var(--ucla-blue);
+    color: var(--ucla-blue);
+    transition: all 0.3s ease;
+    /* Zoom */
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--ucla-blue);
+}
+.navbar .logo:hover {
+    text-decoration: underline;
+}
+
+.navbar button {
+    background-color: var(--ucla-blue);
+    color: var(--gunmetal);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.navbar button:hover {
+    background-color: var(--cadet-gray);
+    color: var(--ucla-blue);
+    transform: scale(1.05);
+}
+.navbar button:active {
+    transform: scale(0.95);
+}
+.navbar button:focus {
+    outline: none;
+}
+
+.navbar .nav_buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-left: auto;
+}
+
+.navbar .hamburger {
+    display: none; /* Hide hamburger menu by default */
+    font-size: 24px;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+/* Hamburger menu for phone screens */
+@media (max-width: 768px) {
+    .navbar {
+        grid-template-columns: 1fr 0fr;
+        transition: all 0.3s ease;
+    }
+
+    .navbar ul {
+        display: none; /* Hide the regular navbar */
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        background-color: white;
+        width: 100%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar ul.active {
+        display: flex; /* Show the menu when active */
+    }
+
+    .navbar .hamburger {
+        display: block;
+        cursor: pointer;
+        font-size: 24px;
+        align-items: center;
+        align-self: center;
+        justify-content: flex-end;
+        justify-self: flex-end;
+        margin-right: 20px;
+    }
+
+    .navbar .nav_buttons {
+        display: none; /* Hide buttons on small screens */
+    }
+
+    .navbar .navbar_header {
+        display: flex;
+        justify-content: space-between;
+    }
+}
