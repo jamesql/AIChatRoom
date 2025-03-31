@@ -1,0 +1,43 @@
+/* Colors */
+
+:root {
+    --steel-blue: #567896ff;
+    --gunmetal: #2A343Dff;
+    --charcoal: #324A5Fff;
+    --ucla-blue: #2B79BDff;
+    --cadet-gray: #8BA2B5ff;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Helvetica', 'Poppins', sans-serif;
+    background-color: var(--gunmetal);
+    color: var(--cadet-gray);
+    line-height: 1.6;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--ucla-blue);
+}
+a {
+    color: var(--ucla-blue);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Buttons */ 
+
+button {
+    background-color: var(--ucla-blue);
+    color: var(--ucla-blue);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

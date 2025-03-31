@@ -1,0 +1,13 @@
+/** Container */
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.background {
+    background-image: url("https://i.gifer.com/DO5.gif");
+    background-size:auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: black;
+}
