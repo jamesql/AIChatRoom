@@ -40,7 +40,7 @@ const PromptDev: React.FC = () => {
                     Submit
                 </button>
             </main>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
