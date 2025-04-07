@@ -13,58 +13,32 @@
     justify-content: center;
 }
 
+.header {
+    margin-bottom: flex;
+    text-align: center;
+}
+
+.prompt {
+    margin-bottom: flex;
+    padding: 50px;
+    text-align: center;
+}
+
 .title {
-    font-size: 2rem;
-    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-.chatContainer {
+.responseInput {
     width: 100%;
     max-width: 600px;
-    height: auto;
-    border: 1px solid #000000;
-    border-radius: 4px;
+    height: 75px;
     padding: 10px;
-    background-color: #000000;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.playerMessage {
-    align-self: flex-end;
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 15px;
-    max-width: 70%;
-    word-wrap: break-word;
-}
-
-.otherMessage {
-    align-self: flex-start;
-    background-color: #e5e5ea;
-    color: black;
-    padding: 10px 15px;
-    border-radius: 15px;
-    max-width: 70%;
-    word-wrap: break-word;
-}
-
-.inputBox {
-    display: flex;
-    width: 100%;
-    max-width: 600px;
-    margin-top: 10px;
-}
-
-.input {
-    flex: 1;
-    padding: 10px;
+    font-size: 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    margin-right: 10px;
+    margin-bottom: 10px;
+    resize: none;
 }
 
 .submitButton {
