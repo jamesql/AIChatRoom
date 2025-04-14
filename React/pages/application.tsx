@@ -117,7 +117,7 @@ const Application: React.FC = () => {
         })
     };
 
-    const handleVoteResponse: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+    const handleBeginVoting: OpCodeHandler = async (data: any, client: WebSocketClient) => {
         console.log("Received data:", data);
         const newLobby = data.lobby;
         setLobby(newLobby);
@@ -136,10 +136,9 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.PROMPT, [handlePrompt]);
     listeners.set(OPCodes.SUBMIT_PROMPT_RESPONSE, [handleAnswerSubmitted]);
     listeners.set(OPCodes.ALL_ANSWERS, [handleAllAnswersSubmitted]);
-    listeners.set(OPCodes.VOTE_RESPONSE, [handleVoteResponse]);
+    listeners.set(OPCodes.BEGIN_VOTING, [handleBeginVoting]);
 
 
-    
 
     if (loading) {
         return <div>Loading...</div>;

@@ -327,7 +327,7 @@ router.post("/start-voting", [
     // send answers to players
     lobby.users.forEach((u) => {
         redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
-            op: OPCodes.VOTE_RESPONSE,
+            op: OPCodes.BEGIN_VOTING,
             d: {
                 lobby: lobby,
                 answers: lobby.rounds[lobby.rounds.length - 1].answers,
