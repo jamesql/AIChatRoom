@@ -3,10 +3,13 @@ import User from "../../TYPES/userTypes";
 import UserService from "../data/user";
 import { env } from "process";
 import { redisInstance } from "../data/redis";
-import { UserSession } from "../../TYPES/socketTypes";
+import { Bcrypt } from "../data/bcrypt";
+import TokenUtil from "../../Util/Token";
+
 const { body, validationResult, header } = require("express-validator");
 
-const bcrypt = require("bcrypt");
+const bCrypt = new Bcrypt(); // Bcrypt class
+const tokenUtil = new TokenUtil(); // TokenUtil class
 
 const router: Router = express.Router();
 
@@ -25,7 +28,7 @@ router.post("/register", [
     const { username, password, email, avatar } = req.body;
     const user: User = await UserService.createUser({
         name: username,
-        password: await bcrypt.hash(password, env.BCRYPT_SALT_ROUNDS),
+        password: await bCrypt.hashPassword(password),
         email,
         avatar,
         gamesPlayed: 0,
@@ -38,7 +41,17 @@ router.post("/register", [
         return;
     }
 
-    res.status(201).json(user);
+    // generate tokens
+    const accessToken = tokenUtil.generateAccessToken(user.id);
+    const refreshToken = tokenUtil.generateRefreshToken(user.id);
+
+    
+
+    res.status(201).json({
+        user: user,
+        accessToken,
+        refreshToken,
+    });
     return;
 }); 
 
@@ -60,23 +73,22 @@ router.post("/login", [
         return;
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bCrypt.comparePassword(password, user.password);
     if (!passwordMatch) {
         res.status(401).json({ error: "Invalid password." });
         return;
     }
 
-    redisInstance.set(`user:${user.id}`, JSON.stringify({
+    // generate tokens
+    const accessToken = tokenUtil.generateAccessToken(user.id);
+    const refreshToken = tokenUtil.generateRefreshToken(user.id);
+
+    res.status(200).json({
         user: user,
-        isInLobby: false,
-        isHost: false,
-        isInGame: false,
-        isInPublicMatchmaking: false,
-        lobbyId: null,
+        accessToken,
+        refreshToken,
+    });
 
-    } as UserSession));
-
-    res.status(200).json(user);
     return;
 });
 

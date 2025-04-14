@@ -1,7 +1,7 @@
 import AIUser from "./aiTypes";
 import User from "./userTypes";
 
-export type LobbyStatus = 'waiting' | 'prompt' | 'voter' | 'finished';
+export type LobbyStatus = "lobby" | "prompt" | "waiting_answers" | "voting" | "waiting_voting" | "next_round" | "ai_win" | "user_win";
 
 export interface Prompt {
     id: string;
@@ -27,7 +27,7 @@ export interface LobbyRound {
     round: number;
     question: Prompt;
     answers: Answer[];
-    lobby: Lobby;
+    lobbyId: string;
     votes: Vote[];
 
 }
@@ -38,5 +38,6 @@ export interface Lobby {
     aiUser: AIUser;
     rounds: LobbyRound[];
     host: User;
+    inGame: boolean;
 }
 

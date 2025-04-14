@@ -1,0 +1,21 @@
+{
+    "name": "botify-socket",
+    "version": "1.0.0",
+    "description": "Socket server for botify service",
+    "main": "index.ts",
+    "scripts": {
+      "test": "npm run"
+    },
+    "author": "james ash",
+    "license": "MIT",
+    "dependencies": {
+      "@types/ws": "^8.18.0",
+      "dotenv": "^16.4.7",
+      "http": "^0.0.1-security",
+      "ioredis": "^5.6.0",
+      "ws": "^8.18.1"
+    },
+    "devDependencies": {
+      "@types/node": "^22.13.10"
+    }
+  }
