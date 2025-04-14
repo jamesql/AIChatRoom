@@ -1,11 +1,31 @@
 import NavigationBar from '@/components/NavigationBar';
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import classes from "../styles/dashboard.module.css";
 import DashUserCard from '@/components/DashUserCard';
 import Matchmaker from '@/components/Matchmaker';
 import Footer from '@/components/Footer';
+import { WebSocketContext } from '@/components/WebSocket';
+import { WebSocketClient } from '@/util/ws';
+import User from '../../TYPES/userTypes';
 
 const Dashboard: React.FC = () => {
+    const wsClient = useContext(WebSocketContext);
+
+    const [user, setUser] = useState<User | null>(null);
+
+    if (!wsClient) {
+        console.error("WebSocketClient is not available");
+        return null;
+    }
+
+    useEffect(() => {
+
+        
+
+
+    }, []);
+
+
     return (
         <div className={classes.container}>
             <NavigationBar authButtons={false} />
