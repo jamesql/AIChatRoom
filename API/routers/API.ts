@@ -348,6 +348,36 @@ router.post("/end-voting", [
     });
 });
 
+router.get("/getUserData", [
+    header("Authorization").exists().withMessage("Authorization header is required"),
+], async(req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+         res.status(400).json({ errors: errors.array() });
+         return;
+    }
+
+    const token = req.headers.authorization as string;
+    const result = await validateToken(token);
+    if (!result || !result.valid) {
+        res.status(401).json({ error: "Invalid token" });
+        return;
+    }
+
+    const userId = result.userId;
+    const user = await UserService.getUserById(userId);
+    if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+    }
+
+    // return the user information
+    res.status(200).json({
+        user
+    });
+}
+)
+
 
 
 
