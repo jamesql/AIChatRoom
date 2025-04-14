@@ -13,7 +13,7 @@ export interface Answer {
     answer: string;
     user: User | AIUser;
     question: Prompt;
-    lobby: Lobby;
+    lobbyId: string;
 }
 
 export interface Vote {

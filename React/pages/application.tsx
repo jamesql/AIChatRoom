@@ -98,7 +98,7 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.LOBBY_USER_JOIN, [handleUserJoined]);
     listeners.set(OPCodes.LOBBY_USER_LEAVE, [handleUserLeft]);
     listeners.set(OPCodes.PROMPT, [handlePrompt]);
-    
+
 
     
 
@@ -118,7 +118,7 @@ const Application: React.FC = () => {
             )}
 
             {lobby && lobby.status==="prompt" && localStatus === "prompt" && curPrompt && (
-                <PromptDev />
+                <PromptDev lobby={lobby} userId={userId} prompt={curPrompt} />
             )}
 
             </WebSocketComponent>
