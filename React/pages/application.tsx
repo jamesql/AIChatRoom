@@ -11,6 +11,7 @@ import { Lobby, LobbyStatus, Prompt } from '../../TYPES/lobbyTypes';
 import Dashboard from './dashboard';
 import LobbyDev from './lobby_dev';
 import PromptDev from './prompt_dev';
+import WaitingElement from './waiting';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -89,6 +90,14 @@ const Application: React.FC = () => {
         setPrompt(data.prompt);
     }
 
+    const handleAnswerSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+
+        setLocalStatus("waiting_answers");
+    }
+
 
 
 
@@ -98,6 +107,7 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.LOBBY_USER_JOIN, [handleUserJoined]);
     listeners.set(OPCodes.LOBBY_USER_LEAVE, [handleUserLeft]);
     listeners.set(OPCodes.PROMPT, [handlePrompt]);
+    listeners.set(OPCodes.SUBMIT_PROMPT_RESPONSE, [handleAnswerSubmitted]);
 
 
     
@@ -120,6 +130,12 @@ const Application: React.FC = () => {
             {lobby && lobby.status==="prompt" && localStatus === "prompt" && curPrompt && (
                 <PromptDev lobby={lobby} userId={userId} prompt={curPrompt} />
             )}
+
+            {lobby && lobby.status==="prompt" && localStatus === "waiting_answers" && (
+                <WaitingElement header="Waiting for answers" />
+            )}
+
+
 
             </WebSocketComponent>
 

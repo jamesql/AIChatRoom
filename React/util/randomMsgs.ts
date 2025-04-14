@@ -14,4 +14,22 @@ export const bioMessages = [
 export function randomBio(): string {
     const randomIndex = Math.floor(Math.random() * bioMessages.length);
     return bioMessages[randomIndex];
-}
+};
+
+export const waitingForOtherUsersToAnswer = [
+    "Waiting... patience is a virtue, right?",
+    "Good things come to those who wait.",
+    "Just hanging out until someone chimes in.",
+    "Tick-tock, tick-tock... still waiting.",
+    "Silence is golden, but answers are better.",
+    "Any moment now... or so we hope.",
+    "The suspense is killing me!",
+    "Waiting for a reply, like a cat at a mouse hole.",
+    "Cue the elevator music.",
+    "Still here, still waiting, still hopeful."
+];
+
+export function randomWaitingMessage(): string {
+    const randomIndex = Math.floor(Math.random() * waitingForOtherUsersToAnswer.length);
+    return waitingForOtherUsersToAnswer[randomIndex];
+};
