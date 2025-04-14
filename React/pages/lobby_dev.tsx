@@ -19,7 +19,7 @@ const LobbyDev: React.FC<LobbyProps> = ({lobby, userId}) => {
             <CurrentPlayers players={lobby.users} />
     
             {lobby.host.id === userId && (
-                <LobbyHostOptions />
+                <LobbyHostOptions lobbyId={lobby.id} />
             )}
 
 

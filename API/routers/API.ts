@@ -5,7 +5,7 @@ import { redisInstance } from "../data/redis";
 import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} from "../../TYPES/types";
 import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
-import { JoinLobbyPacket, OPCodes } from "../../TYPES/socketTypes";
+import { JoinLobbyPacket, OPCodes, PromptPacket } from "../../TYPES/socketTypes";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -213,6 +213,17 @@ router.post("/start-lobby", [
         res.status(500).json({ error: "Failed to start lobby" });
         return;
     }
+
+    // send prompt to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.PROMPT,
+            d: {
+                prompt: lobby.rounds[lobby.rounds.length - 1].question,
+                lobby: lobby,
+            },
+        } as PromptPacket));
+    });
 
     // return the lobby information
     res.status(200).json({

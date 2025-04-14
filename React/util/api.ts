@@ -44,6 +44,13 @@ class ApiClient {
         return this.axiosInstance.post('/api/join-matchmaking');
     }
 
+    public async startGame(token: string, lobbyId: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/start-lobby', { lobbyId });
+    }
+
+
+
 
 
 
