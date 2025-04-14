@@ -99,9 +99,8 @@ export interface PromptPacket {
 export interface SubmitPromptResponsePacket {
     op: OPCode;
     d: {
-        lobby: Lobby;
         prompt: Prompt;
-        answers: Answer[];
+        answer: Answer; // User's answer to the prompt
     }
 }
 

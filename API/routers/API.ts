@@ -5,7 +5,8 @@ import { redisInstance } from "../data/redis";
 import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} from "../../TYPES/types";
 import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
-import { JoinLobbyPacket, OPCodes, PromptPacket } from "../../TYPES/socketTypes";
+import { JoinLobbyPacket, OPCodes, PromptPacket, SubmitPromptResponsePacket } from "../../TYPES/socketTypes";
+import { Submit } from "cloudflare/resources/brand-protection";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -266,6 +267,15 @@ router.post("/add-answer", [
         res.status(500).json({ error: "Failed to add answer" });
         return;
     }
+
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.SUBMIT_PROMPT_RESPONSE,
+        d: {
+            prompt: prompt,
+            answer: answer,
+            lobby: lobby,
+        },
+    } as SubmitPromptResponsePacket));
 
     // return the lobby information
     res.status(200).json({
