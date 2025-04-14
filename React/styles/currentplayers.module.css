@@ -38,6 +38,28 @@
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
-    background-color: var(--cadet-gray);
     color: var(--ucla-blue);
+}
+
+.playerItem img {
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	cursor: pointer;
+	position: relative;
+	transition: border-radius 128ms, background 128ms, color 128ms;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.playerItem:hover {
+    background-color: var(--color-light-blue);
+    color: var(--color-full-white);
+}
+
+.playerName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 10px;
 }

@@ -11,6 +11,8 @@ import { Lobby, LobbyStatus, Prompt } from '../../TYPES/lobbyTypes';
 import Dashboard from './dashboard';
 import LobbyDev from './lobby_dev';
 import PromptDev from './prompt_dev';
+import WaitingElement from './waiting';
+import VotingDev from './voting_dev';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -89,6 +91,40 @@ const Application: React.FC = () => {
         setPrompt(data.prompt);
     }
 
+    const handleAnswerSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+
+        setLocalStatus("waiting_answers");
+    }
+
+    const handleAllAnswersSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+
+        // make api request to start voting
+        const accessToken = Cookies.get("accessToken");
+        if (!accessToken) {
+            console.error("Access token not found");
+            return;
+        }
+        ApiClient.getInstance().startVoting(accessToken, newLobby.id).then((res) => {
+            console.log("Started voting");
+        }).catch((err) => {
+            console.error(err);
+        })
+    };
+
+    const handleBeginVoting: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+        setLocalStatus("voting");
+    };
+        
+
 
 
 
@@ -98,9 +134,11 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.LOBBY_USER_JOIN, [handleUserJoined]);
     listeners.set(OPCodes.LOBBY_USER_LEAVE, [handleUserLeft]);
     listeners.set(OPCodes.PROMPT, [handlePrompt]);
+    listeners.set(OPCodes.SUBMIT_PROMPT_RESPONSE, [handleAnswerSubmitted]);
+    listeners.set(OPCodes.ALL_ANSWERS, [handleAllAnswersSubmitted]);
+    listeners.set(OPCodes.BEGIN_VOTING, [handleBeginVoting]);
 
 
-    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -120,6 +158,20 @@ const Application: React.FC = () => {
             {lobby && lobby.status==="prompt" && localStatus === "prompt" && curPrompt && (
                 <PromptDev lobby={lobby} userId={userId} prompt={curPrompt} />
             )}
+
+            {lobby && lobby.status==="prompt" && localStatus === "waiting_answers" && (
+                <WaitingElement header="Waiting for answers" />
+            )}
+
+            {lobby && lobby.status==="voting" && localStatus==="voting" && (
+                <VotingDev />
+            )}
+
+            {lobby && lobby.status==="voting" && localStatus === "waiting_voting" && (
+                <WaitingElement header="Waiting for votes" />
+            )}
+
+
 
             </WebSocketComponent>
 

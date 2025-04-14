@@ -5,7 +5,8 @@ import { redisInstance } from "../data/redis";
 import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} from "../../TYPES/types";
 import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
-import { JoinLobbyPacket, OPCodes, PromptPacket } from "../../TYPES/socketTypes";
+import { JoinLobbyPacket, OPCodes, PromptPacket, SubmitPromptResponsePacket } from "../../TYPES/socketTypes";
+import { Submit } from "cloudflare/resources/brand-protection";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -267,6 +268,25 @@ router.post("/add-answer", [
         return;
     }
 
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.SUBMIT_PROMPT_RESPONSE,
+        d: {
+            prompt: prompt,
+            answer: answer,
+            lobby: lobby,
+        },
+    } as SubmitPromptResponsePacket));
+
+
+    if (lobby.rounds[lobby.rounds.length - 1].answers.length === lobby.users.length) {
+        redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
+            op: OPCodes.ALL_ANSWERS,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    }
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,
@@ -303,6 +323,17 @@ router.post("/start-voting", [
         res.status(500).json({ error: "Failed to start voting" });
         return;
     }
+
+    // send answers to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.BEGIN_VOTING,
+            d: {
+                lobby: lobby,
+                answers: lobby.rounds[lobby.rounds.length - 1].answers,
+            },
+        }));
+    });
 
     // return the lobby information
     res.status(200).json({

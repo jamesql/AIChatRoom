@@ -142,9 +142,6 @@ class LobbyManager {
             return null;
         }
         const round = lobby.rounds[lobby.rounds.length - 1];
-        if (round.answers.length < 2) {
-            return null;
-        }
         round.votes = [];
         lobby.status = "voting";
         return lobby;
