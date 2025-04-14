@@ -4,7 +4,6 @@ import { validateToken } from "../data/token";
 import { redisInstance } from "../data/redis";
 import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} from "../../TYPES/types";
 import UserService from "../data/user";
-import { UserSession } from "../../TYPES/socketTypes";
 import LobbyManager from "../data/lobbys";
 
 const router: Router = express.Router();

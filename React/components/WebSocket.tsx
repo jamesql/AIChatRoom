@@ -18,6 +18,7 @@ const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners }) => {
         for (const [opCode, handlers] of listeners.entries()) {
             handlers.forEach(handler => {
                 wsRef.current?.addListener(opCode, handler);
+                console.log(`Added listener for opCode ${opCode}`);
             });
         }
 

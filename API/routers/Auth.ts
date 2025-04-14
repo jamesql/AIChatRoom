@@ -3,7 +3,6 @@ import User from "../../TYPES/userTypes";
 import UserService from "../data/user";
 import { env } from "process";
 import { redisInstance } from "../data/redis";
-import { UserSession } from "../../TYPES/socketTypes";
 import { Bcrypt } from "../data/bcrypt";
 import TokenUtil from "../../Util/Token";
 
@@ -79,16 +78,6 @@ router.post("/login", [
         res.status(401).json({ error: "Invalid password." });
         return;
     }
-
-    redisInstance.set(`user:${user.id}`, JSON.stringify({
-        user: user,
-        isInLobby: false,
-        isHost: false,
-        isInGame: false,
-        isInPublicMatchmaking: false,
-        lobbyId: null,
-
-    } as UserSession));
 
     // generate tokens
     const accessToken = tokenUtil.generateAccessToken(user.id);

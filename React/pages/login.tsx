@@ -3,6 +3,7 @@ import NavigationBar from "@/components/NavigationBar";
 import classes from "../styles/login.module.css";
 import Footer from "@/components/Footer";
 import ApiClient from "@/util/api";
+import Cookies from "js-cookie";
 
 export default function login() {
     const [username, setUsername] = useState("");
@@ -17,8 +18,8 @@ export default function login() {
             .then((res) => {
                 if (res.status === 200) {
                     const { accessToken, refreshToken } = res.data;
-                    localStorage.setItem("accessToken", accessToken);
-                    localStorage.setItem("refreshToken", refreshToken);
+                    Cookies.set("accessToken", accessToken, { expires: 1 });
+                    Cookies.set("refreshToken", refreshToken, { expires: 7 });
                     window.location.href = "/dashboard";
                 } else {
                     console.error("Login failed");

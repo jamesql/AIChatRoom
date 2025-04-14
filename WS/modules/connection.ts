@@ -33,6 +33,7 @@ export default async (
     client.sendAsync({
         op: OPCodes.HELLO,
         d: {
+            "hello": 100
         },
     });
 };
