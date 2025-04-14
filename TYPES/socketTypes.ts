@@ -26,6 +26,7 @@ export const OPCodes = {
     GAME_STATE_UPDATE: 12, // Update game state for all players
     LOBBY_USER_JOIN: 13,
     LOBBY_USER_LEAVE: 14,
+    ALL_ANSWERS: 15
 };
 
 export type OPCode = typeof OPCodes[keyof typeof OPCodes];

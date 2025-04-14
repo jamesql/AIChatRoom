@@ -56,6 +56,11 @@ class ApiClient {
         return this.axiosInstance.post('/api/add-answer', { prompt, answer, lobbyId });
     }
 
+    public async startVoting(token: string, lobbyId: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/start-voting', { lobbyId });
+    }
+
 
 
 

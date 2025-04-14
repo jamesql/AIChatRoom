@@ -98,6 +98,32 @@ const Application: React.FC = () => {
         setLocalStatus("waiting_answers");
     }
 
+    const handleAllAnswersSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+
+        // make api request to start voting
+        const accessToken = Cookies.get("accessToken");
+        if (!accessToken) {
+            console.error("Access token not found");
+            return;
+        }
+        ApiClient.getInstance().startVoting(accessToken, newLobby.id).then((res) => {
+            console.log("Started voting");
+        }).catch((err) => {
+            console.error(err);
+        })
+    };
+
+    const handleVoteResponse: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+        setLocalStatus("voting");
+    };
+        
+
 
 
 
@@ -108,6 +134,8 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.LOBBY_USER_LEAVE, [handleUserLeft]);
     listeners.set(OPCodes.PROMPT, [handlePrompt]);
     listeners.set(OPCodes.SUBMIT_PROMPT_RESPONSE, [handleAnswerSubmitted]);
+    listeners.set(OPCodes.ALL_ANSWERS, [handleAllAnswersSubmitted]);
+    listeners.set(OPCodes.VOTE_RESPONSE, [handleVoteResponse]);
 
 
     

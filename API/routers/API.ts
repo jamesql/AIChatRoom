@@ -277,6 +277,16 @@ router.post("/add-answer", [
         },
     } as SubmitPromptResponsePacket));
 
+
+    if (lobby.rounds[lobby.rounds.length - 1].answers.length === lobby.users.length) {
+        redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
+            op: OPCodes.ALL_ANSWERS,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    }
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,
@@ -313,6 +323,17 @@ router.post("/start-voting", [
         res.status(500).json({ error: "Failed to start voting" });
         return;
     }
+
+    // send answers to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.VOTE_RESPONSE,
+            d: {
+                lobby: lobby,
+                answers: lobby.rounds[lobby.rounds.length - 1].answers,
+            },
+        }));
+    });
 
     // return the lobby information
     res.status(200).json({
