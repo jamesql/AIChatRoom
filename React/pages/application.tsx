@@ -12,6 +12,7 @@ import Dashboard from './dashboard';
 import LobbyDev from './lobby_dev';
 import PromptDev from './prompt_dev';
 import WaitingElement from './waiting';
+import VotingDev from './voting_dev';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -161,6 +162,14 @@ const Application: React.FC = () => {
 
             {lobby && lobby.status==="prompt" && localStatus === "waiting_answers" && (
                 <WaitingElement header="Waiting for answers" />
+            )}
+
+            {lobby && lobby.status==="voting" && localStatus==="voting" && (
+                <VotingDev />
+            )}
+
+            {lobby && lobby.status==="voting" && localStatus === "waiting_voting" && (
+                <WaitingElement header="Waiting for votes" />
             )}
 
 
