@@ -1,34 +1,29 @@
 {
-  "name": "aichatroom-api",
+  "name": "botify-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "botify api server",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build": "npm install && prisma generate"
   },
   "author": "james ash",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
   "dependencies": {
     "@prisma/client": "^6.5.0",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.1",
-    "@types/node": "^22.13.13",
-    "aichatroom-api": "file:",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.10",
+    "@types/uuid": "^10.0.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
-    "ioredis": "^5.6.0",
-    "jsonwebtoken": "^9.0.2",
-    "next": "^15.2.4",
     "prisma": "^6.5.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "ts-node": "^10.9.2"
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17"
   }
 }

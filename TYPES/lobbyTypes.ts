@@ -27,7 +27,7 @@ export interface LobbyRound {
     round: number;
     question: Prompt;
     answers: Answer[];
-    lobby: Lobby;
+    lobbyId: string;
     votes: Vote[];
 
 }
@@ -38,5 +38,6 @@ export interface Lobby {
     aiUser: AIUser;
     rounds: LobbyRound[];
     host: User;
+    inGame: boolean;
 }
 
