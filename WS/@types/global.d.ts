@@ -1,5 +1,6 @@
 // Global tyoes
 import { Server } from "http";
+import { RedisPubSub } from "../../Util/Redis";
 
 export {};
 
@@ -17,6 +18,7 @@ declare global {
         type: "client";
         authenticated: boolean;
         address: String;
+        subscriber: RedisPubSub;
         activeSubscriptions: Set<string>;
   
         props: {
