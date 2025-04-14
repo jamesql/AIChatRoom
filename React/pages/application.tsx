@@ -66,9 +66,25 @@ const Application: React.FC = () => {
 
     }
 
+    const handleUserJoined: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+    }
+    const handleUserLeft: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+    }
+
+    
+
+
     listeners.set(OPCodes.HELLO, [handleHello]);
     listeners.set(OPCodes.READY, [handleReady]);
     listeners.set(OPCodes.JOIN_LOBBY, [handleJoinLobby]);
+    listeners.set(OPCodes.LOBBY_USER_JOIN, [handleUserJoined]);
+    listeners.set(OPCodes.LOBBY_USER_LEAVE, [handleUserLeft]);
 
     
 

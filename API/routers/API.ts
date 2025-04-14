@@ -47,6 +47,17 @@ router.post("/join-matchmaking", [
         },
     } as JoinLobbyPacket));
 
+    lobby.users.forEach((u) => {
+        if (u.id === userId) return;
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.LOBBY_USER_JOIN,
+            d: {
+                lobby: lobby,
+                user: u,
+            },
+        } as JoinLobbyPacket));
+    });
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,

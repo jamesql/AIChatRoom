@@ -24,6 +24,8 @@ export const OPCodes = {
     VOTE_RESPONSE: 10, // Vote on a response
     END_GAME: 11, // End the game
     GAME_STATE_UPDATE: 12, // Update game state for all players
+    LOBBY_USER_JOIN: 13,
+    LOBBY_USER_LEAVE: 14,
 };
 
 export type OPCode = typeof OPCodes[keyof typeof OPCodes];
@@ -125,3 +127,16 @@ export interface GameStateUpdatePacket {
     }
 }
 
+export interface LobbyUserJoinPacket {
+    op: OPCode;
+    d: {
+        user: User;
+    }
+}
+
+export interface LobbyUserLeavePacket {
+    op: OPCode;
+    d: {
+        user: User;
+    }
+}
