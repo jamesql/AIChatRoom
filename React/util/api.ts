@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import Cookies from 'js-cookie';
+import { Answer, Prompt } from '../../TYPES/lobbyTypes';
 
 class ApiClient {
     private static instance: ApiClient;
@@ -38,6 +39,24 @@ class ApiClient {
         await this.addAuthHeader(token);
         return this.axiosInstance.get('/api/getUserData');
     }
+
+    public async joinPublicLobby(token: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/join-matchmaking');
+    }
+
+    public async startGame(token: string, lobbyId: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/start-lobby', { lobbyId });
+    }
+
+
+    public async addAnswer(token: string, prompt: Prompt, answer: string, lobbyId: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/add-answer', { prompt, answer, lobbyId });
+    }
+
+
 
 
 

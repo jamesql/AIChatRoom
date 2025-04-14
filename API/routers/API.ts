@@ -5,6 +5,7 @@ import { redisInstance } from "../data/redis";
 import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} from "../../TYPES/types";
 import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
+import { JoinLobbyPacket, OPCodes, PromptPacket } from "../../TYPES/socketTypes";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -37,6 +38,25 @@ router.post("/join-matchmaking", [
         res.status(500).json({ error: "Failed to join matchmaking" });
         return;
     }
+
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.JOIN_LOBBY,
+        d: {
+            lobby: lobby,
+            user: user,
+        },
+    } as JoinLobbyPacket));
+
+    lobby.users.forEach((u) => {
+        if (u.id === userId) return;
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.LOBBY_USER_JOIN,
+            d: {
+                lobby: lobby,
+                user: u,
+            },
+        } as JoinLobbyPacket));
+    });
 
     // return the lobby information
     res.status(200).json({
@@ -75,6 +95,14 @@ router.post("/join-lobby", [
         res.status(500).json({ error: "Failed to join lobby" });
         return;
     }
+
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.JOIN_LOBBY,
+        d: {
+            lobby: lobby,
+            user: user,
+        },
+    } as JoinLobbyPacket));
 
     // return the lobby information
     res.status(200).json({
@@ -185,6 +213,17 @@ router.post("/start-lobby", [
         res.status(500).json({ error: "Failed to start lobby" });
         return;
     }
+
+    // send prompt to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.PROMPT,
+            d: {
+                prompt: lobby.rounds[lobby.rounds.length - 1].question,
+                lobby: lobby,
+            },
+        } as PromptPacket));
+    });
 
     // return the lobby information
     res.status(200).json({

@@ -33,8 +33,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ authButtons }) => {
                 </li>
             </ul>
             {(authButtons===true) && (<div className={`${classes.nav_buttons} ${isMenuOpen ? classes.show : ''}`}>
-                <button>Login</button>
-                <button>Register</button>
+                <button onClick={() => {window.location.href="/login"}}>Login</button>
+                <button onClick={() => {window.location.href="/register"}}>Register</button>
             </div>)}
         </nav>
     );

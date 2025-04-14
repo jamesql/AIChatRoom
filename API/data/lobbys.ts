@@ -29,6 +29,7 @@ class LobbyManager {
             rounds: [],
             host: User,
             inGame: false,
+            status: "lobby"
         };
 
         LobbyManager.lobbys.push(newLobby);
@@ -71,6 +72,7 @@ class LobbyManager {
             rounds: [],
             host: User,
             inGame: false,
+            status: "lobby"
         };
         LobbyManager.lobbys.push(newLobby);
         return newLobby;
@@ -96,11 +98,14 @@ class LobbyManager {
             votes: [],
         };
 
+
+        lobby.status = "prompt";
+
         lobby.rounds.push(newRound);
         return lobby;
     } 
 
-    public addAnswer(lobbyId: string, user: User, prompt: Prompt, answer: Answer): Lobby | null {
+    public addAnswer(lobbyId: string, user: User, prompt: Prompt, answer: string): Lobby | null {
         const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
         if (!lobby) {
             return null;
@@ -114,15 +119,20 @@ class LobbyManager {
         // check if user already answered
         const existingAnswer = round.answers.find(a => a.user.id === user.id);
         if (existingAnswer) {
-            existingAnswer.answer = answer.answer;
+            existingAnswer.answer = answer;
             return lobby;
         }
 
-        answer.id = this.generateId();
-        answer.user = user;
-        answer.question = prompt;
-        answer.lobby = lobby;
-        round.answers.push(answer);
+       
+        const userAnswer: Answer = {
+            id: this.generateId(),
+            answer,
+            user,
+            question: prompt,
+            lobbyId: lobby.id,
+        };
+
+        round.answers.push(userAnswer);
         return lobby;
     }
 
@@ -136,6 +146,7 @@ class LobbyManager {
             return null;
         }
         round.votes = [];
+        lobby.status = "voting";
         return lobby;
     }
 
@@ -192,6 +203,7 @@ class LobbyManager {
         if (userIndex !== -1) {
             lobby.users.splice(userIndex, 1);
         }
+        lobby.status = "next_round";
         return lobby;
     }
 

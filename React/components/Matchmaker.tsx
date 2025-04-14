@@ -1,10 +1,33 @@
 import React, {useState} from 'react';
 import classes from "../styles/matchmaker.module.css";
+import ApiClient from '@/util/api';
+import Cookies from 'js-cookie';
 
 const Matchmaker: React.FC = () => {
     const [publicLobby, setPublicLobby] = useState(true);
     const [privateLobby, setPrivateLobby] = useState(false);
     const [createLobby, setCreateLobby] = useState(false);
+
+
+
+
+    const handleJoinPublicLobby = () => {
+        // Logic to join a public lobby
+        console.log("joining public lobby....");
+
+        const accessToken = Cookies.get("accessToken");
+
+        if (!accessToken) {
+            console.error("Access token not found");
+            return;
+        }
+
+        // call api
+        ApiClient.getInstance().joinPublicLobby(accessToken);
+
+    }
+
+
     return (
         <div className={classes.container}>
             <div className={`${classes.section} ${classes.section_left}`}>
@@ -46,8 +69,8 @@ const Matchmaker: React.FC = () => {
 
                 </div>
                 <div className={classes.extras}>
-                    {publicLobby && (<button>
-                        <a href="/play">Join a Public Lobby</a>
+                    {publicLobby && (<button onClick={handleJoinPublicLobby}>
+                        Join a Public Lobby
                     </button>)}
                     {privateLobby && (<>
                     <label>

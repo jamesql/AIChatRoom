@@ -1,10 +1,28 @@
 import React from 'react';
 import classes from "../styles/dashusercard.module.css";
 import { randomBio } from '@/util/randomMsgs';
+import ApiClient from '@/util/api';
+import Cookies from 'js-cookie';
 
 interface DashUserCardProps {
     name: string;
     avatarUrl?: string;
+}
+
+const handleJoinPublicLobby = () => {
+    // Logic to join a public lobby
+    console.log("joining public lobby....");
+
+    const accessToken = Cookies.get("accessToken");
+
+    if (!accessToken) {
+        console.error("Access token not found");
+        return;
+    }
+
+    // call api
+    ApiClient.getInstance().joinPublicLobby(accessToken);
+
 }
 
 const DashUserCard: React.FC<DashUserCardProps> = ({ name, avatarUrl }) => {
@@ -27,8 +45,8 @@ const DashUserCard: React.FC<DashUserCardProps> = ({ name, avatarUrl }) => {
                 <h1>Welcome, {name}!</h1>
                 <p>{randomBio()}</p>
             </div>
-            <button>
-                <a href="/play">Join a Lobby</a>
+            <button onClick={handleJoinPublicLobby}>
+                Join a Lobby
             </button>
         </div>
     );

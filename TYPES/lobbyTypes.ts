@@ -13,7 +13,7 @@ export interface Answer {
     answer: string;
     user: User | AIUser;
     question: Prompt;
-    lobby: Lobby;
+    lobbyId: string;
 }
 
 export interface Vote {
@@ -39,5 +39,6 @@ export interface Lobby {
     rounds: LobbyRound[];
     host: User;
     inGame: boolean;
+    status: LobbyStatus;
 }
 
