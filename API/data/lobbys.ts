@@ -29,6 +29,7 @@ class LobbyManager {
             rounds: [],
             host: User,
             inGame: false,
+            status: "lobby"
         };
 
         LobbyManager.lobbys.push(newLobby);
@@ -71,6 +72,7 @@ class LobbyManager {
             rounds: [],
             host: User,
             inGame: false,
+            status: "lobby"
         };
         LobbyManager.lobbys.push(newLobby);
         return newLobby;
@@ -95,6 +97,9 @@ class LobbyManager {
             lobbyId: lobby.id,
             votes: [],
         };
+
+
+        lobby.status = "prompt";
 
         lobby.rounds.push(newRound);
         return lobby;
@@ -136,6 +141,7 @@ class LobbyManager {
             return null;
         }
         round.votes = [];
+        lobby.status = "voting";
         return lobby;
     }
 
@@ -192,6 +198,7 @@ class LobbyManager {
         if (userIndex !== -1) {
             lobby.users.splice(userIndex, 1);
         }
+        lobby.status = "next_round";
         return lobby;
     }
 

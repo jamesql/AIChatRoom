@@ -39,6 +39,12 @@ class ApiClient {
         return this.axiosInstance.get('/api/getUserData');
     }
 
+    public async joinPublicLobby(token: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.post('/api/join-matchmaking');
+    }
+
+
 
 
 

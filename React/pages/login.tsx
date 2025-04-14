@@ -20,7 +20,7 @@ export default function login() {
                     const { accessToken, refreshToken } = res.data;
                     Cookies.set("accessToken", accessToken, { expires: 1 });
                     Cookies.set("refreshToken", refreshToken, { expires: 7 });
-                    window.location.href = "/dashboard";
+                    window.location.href = "/application";
                 } else {
                     console.error("Login failed");
                 }

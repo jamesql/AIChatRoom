@@ -18,7 +18,6 @@ const Application: React.FC = () => {
 
     // lobby detail stuff
     const [lobby, setLobby] = useState<Lobby | null>(null);
-    const [lobbyStatus, setLobbyStatus] = useState<LobbyStatus | null>(null);
 
     const handleLogout = () => {
         Cookies.remove("accessToken");
@@ -59,8 +58,17 @@ const Application: React.FC = () => {
         setUserId(data.userId);
     }
 
+    const handleJoinLobby: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+
+        setLobby(data.lobby);
+
+
+    }
+
     listeners.set(OPCodes.HELLO, [handleHello]);
     listeners.set(OPCodes.READY, [handleReady]);
+    listeners.set(OPCodes.JOIN_LOBBY, [handleJoinLobby]);
 
     
 
@@ -75,8 +83,8 @@ const Application: React.FC = () => {
                 <Dashboard />
             )}
 
-            {lobby && lobbyStatus==='lobby' && (
-                <LobbyDev />
+            {lobby && lobby.status==='lobby' && (
+                <LobbyDev lobby={lobby} userId={userId} />
             )}
             </WebSocketComponent>
 

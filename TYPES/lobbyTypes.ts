@@ -39,5 +39,6 @@ export interface Lobby {
     rounds: LobbyRound[];
     host: User;
     inGame: boolean;
+    status: LobbyStatus;
 }
 

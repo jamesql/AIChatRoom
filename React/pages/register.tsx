@@ -21,7 +21,7 @@ export default function register() {
                     const { accessToken, refreshToken } = res.data;
                     localStorage.setItem("accessToken", accessToken);
                     localStorage.setItem("refreshToken", refreshToken);
-                    window.location.href = "/dashboard";
+                    window.location.href = "/application";
                 } else {
                     console.error("Registration failed");
                 }
