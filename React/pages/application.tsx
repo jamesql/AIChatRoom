@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import WebSocketComponent from '@/components/WebSocket';
 import { OpCodeHandler, WebSocketClient } from '@/util/ws';
 import { OPCodes } from '../../TYPES/socketTypes';
-import { Lobby } from '../../TYPES/lobbyTypes';
+import { Lobby, LobbyStatus } from '../../TYPES/lobbyTypes';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -16,6 +16,7 @@ const Application: React.FC = () => {
 
     // lobby detail stuff
     const [lobby, setLobby] = useState<Lobby | null>(null);
+    const [lobbyStatus, setLobbyStatus] = useState<LobbyStatus | null>(null);
 
     const handleLogout = () => {
         Cookies.remove("accessToken");
@@ -66,8 +67,8 @@ const Application: React.FC = () => {
     } else return (
         <div>
             <WebSocketComponent url="ws://localhost:444" listeners={listeners} />
-            <h1>Application Component</h1>
-            <p>Welcome to the Application page!</p>
+            <NavigationBar authButtons={false} />
+            <Footer />
         </div>
     );
 };
