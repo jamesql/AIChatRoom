@@ -1,6 +1,7 @@
 import React from 'react';
 import ApiClient from '@/util/api';
 import Cookies from 'js-cookie';
+import classes from "../styles/lobbyhostoptions.module.css";
 
 export interface LobbyHostOptionsProps {
     lobbyId: string;
@@ -28,11 +29,11 @@ const LobbyHostOptions: React.FC<LobbyHostOptionsProps> = ({ lobbyId }) => {
 
 
     return (
-        <div className="lobby-host-options">
-            <button onClick={handleStartGame} className="start-game-button">
+        <div className={classes.lobby_host_options}>
+            <button onClick={handleStartGame} className={classes.start_game_button}>
                 Start Game
             </button>
-            <button className="end-lobby-button">
+            <button className={classes.end_lobby_button}>
                 End Lobby
             </button>
         </div>
