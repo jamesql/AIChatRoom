@@ -23,12 +23,24 @@ class ApiClient {
         return ApiClient.instance;
     }
 
+    private addAuthHeader(token: string) {
+        this.axiosInstance.defaults.headers['Authorization'] = token;
+    }
+
     public async login(username: string, password: string): Promise<AxiosResponse<any>> {
         return this.axiosInstance.post('/auth/login', { username, password });
     }
     public async register(username: string, password: string, email: string, avatar: string): Promise<AxiosResponse<any>> {
         return this.axiosInstance.post('/auth/register', { username, password, email, avatar });
     }
+
+    public async getUserData(token: string): Promise<AxiosResponse<any>> {
+        await this.addAuthHeader(token);
+        return this.axiosInstance.get('/api/getUserData');
+    }
+
+
+
 
 
     

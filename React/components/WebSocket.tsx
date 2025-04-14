@@ -1,14 +1,20 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, createContext } from 'react';
 import {WebSocketClient, OpCodeHandler} from "../util/ws";
 
 interface WebSocketProps {
     url: string;
     listeners: Map<number, OpCodeHandler[]>;
+    children?: React.ReactNode;
 }
 
-const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners }) => {
+// create context to store listeners so we can add them from the children
+export const WebSocketContext = createContext<WebSocketClient | null>(null);
+
+
+const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners, children }) => {
     const wsRef = useRef<WebSocketClient | null>(null);
+
 
     useEffect(() => {
         if (wsRef.current) return;
@@ -27,7 +33,11 @@ const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners }) => {
         };
     }, [url, listeners]);
 
-    return<></>;
+    return<>
+        <WebSocketContext.Provider value={wsRef.current}>
+            {children}
+        </WebSocketContext.Provider>
+    </>;
 };
 
 export default WebSocketComponent;

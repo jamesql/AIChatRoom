@@ -8,6 +8,8 @@ import WebSocketComponent from '@/components/WebSocket';
 import { OpCodeHandler, WebSocketClient } from '@/util/ws';
 import { OPCodes } from '../../TYPES/socketTypes';
 import { Lobby, LobbyStatus } from '../../TYPES/lobbyTypes';
+import Dashboard from './dashboard';
+import LobbyDev from './lobby_dev';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -66,9 +68,18 @@ const Application: React.FC = () => {
         return <div>Loading...</div>;
     } else return (
         <div>
-            <WebSocketComponent url="ws://localhost:444" listeners={listeners} />
-            <NavigationBar authButtons={false} />
-            <Footer />
+            <WebSocketComponent url="ws://localhost:444" listeners={listeners}>
+
+
+            {!lobby && (
+                <Dashboard />
+            )}
+
+            {lobby && lobbyStatus==='lobby' && (
+                <LobbyDev />
+            )}
+            </WebSocketComponent>
+
         </div>
     );
 };
