@@ -224,6 +224,10 @@ class LobbyManager {
 
                     }
                 }));
+                // if user was host pick new host
+                if (u[0].id === lobby.host.id) {
+                    lobby.host = lobby.users[0];
+                }
             }
             // check if AI won
             if (lobby.users.length === 1) {
@@ -240,7 +244,7 @@ class LobbyManager {
     public startNewRound(lobbyId: string, userId: string): Lobby {
         const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
         if (!lobby || lobby.host.id !== userId) {
-            throw new Error("Cannot start the lobby");
+            return null;
         }
         lobby.inGame = true;
         const question: Prompt = {

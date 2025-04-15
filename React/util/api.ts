@@ -73,7 +73,7 @@ class ApiClient {
 
     public async startNextRound(token: string, lobbyId: string): Promise<AxiosResponse<any>> {
         await this.addAuthHeader(token);
-        return this.axiosInstance.post('/api/start-next-round', { lobbyId });
+        return this.axiosInstance.post('/api/start-new-round', { lobbyId });
     }
 
 

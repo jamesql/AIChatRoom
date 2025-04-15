@@ -179,7 +179,7 @@ const Application: React.FC = () => {
                 });
 
 
-            }, 10000);
+            }, 5000);
         }
     }
 
