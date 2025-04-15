@@ -75,7 +75,7 @@ const Matchmaker: React.FC = () => {
                     {privateLobby && (<>
                     <label>
                         
-                        <input type="text" placeholder="Enter Lobby ID" />
+                        <input className={classes.pLobbyInput} type="text" placeholder="Enter Lobby ID" />
                     </label>
                     <button>
                         <a href="/play">Join a Private Lobby</a>
