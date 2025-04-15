@@ -17,6 +17,6 @@ app.use("/api", require("./routers/API"));
 app.use("/auth", require("./routers/Auth"));
 
 // port should change later, from env file
-app.listen(5001, () => {
+app.listen(process.env.API_IP_ADDRESS, () => {
   console.log(`[$api] API Server Started.`);
 });
