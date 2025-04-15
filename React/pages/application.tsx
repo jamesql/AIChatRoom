@@ -16,7 +16,6 @@ import VotingDev from './voting_dev';
 import LoseComponent from './lose';
 import WinComponent from './win';
 import VotedOut from './votedOut';
-import '../envConfig.ts';
 
 
 const Application: React.FC = () => {
