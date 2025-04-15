@@ -6,7 +6,6 @@ import {User, Lobby, LobbyRound, LobbyStatus, Socket, Prompt, Answer, AIUser} fr
 import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
 import { JoinLobbyPacket, OPCodes, PromptPacket, SubmitPromptResponsePacket } from "../../TYPES/socketTypes";
-import { Submit } from "cloudflare/resources/brand-protection";
 import OpenAIClient from "../data/openaiclient";
 
 const router: Router = express.Router();
