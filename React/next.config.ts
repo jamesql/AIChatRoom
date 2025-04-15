@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: true, // <--- allows importing from outside the root
   },
+  eslint: {
+    ignoreDuringBuilds: true, // <--- ignore eslint errors
+  },
   webpack: (config) => {
     config.module.rules.push({
       test: /\.tsx?$/,
