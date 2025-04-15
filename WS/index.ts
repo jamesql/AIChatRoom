@@ -12,8 +12,8 @@ import * as ws from "ws";
 const server = http.createServer();
 const wss = new ws.Server({ server });
 
-const port = process.env.PORT || 444;
-const host = process.env.IP_ADDRESS || 'localhost';
+const port = process.env.PORT || 80;
+const host = process.env.SOCKET_IP_ADDRESS || 'localhost';
 
 server.listen(port, () => {
     console.log(`[$wss] Server is listening on ${host}:${port}`);

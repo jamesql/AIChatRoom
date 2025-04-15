@@ -17,6 +17,7 @@ import LoseComponent from './lose';
 import WinComponent from './win';
 import VotedOut from './votedOut';
 
+
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ const Application: React.FC = () => {
     useEffect(() => {
         const accessToken = Cookies.get("accessToken");
         const refreshToken = Cookies.get("refreshToken");
+
     
         if (!accessToken || !refreshToken) {
           // redirect to login page
@@ -214,7 +216,7 @@ const Application: React.FC = () => {
         return <div>Loading...</div>;
     } else return (
         <div>
-            <WebSocketComponent url={`ws://${process.env.REACT_WS_URL}:444`} listeners={listeners}>
+            <WebSocketComponent listeners={listeners}>
 
 
             {!lobby && (

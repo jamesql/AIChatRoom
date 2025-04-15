@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
       ]
     });
 
+    config.resolve.fallback = { fs: false };
+
     return config;
   }
   /* config options here */

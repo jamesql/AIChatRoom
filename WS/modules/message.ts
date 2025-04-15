@@ -2,7 +2,7 @@
 
 import { IncomingMessage } from "http";
 import * as ws from "ws";
-import { OPCodes } from "../../Types/socketTypes";
+import { OPCodes } from "../../TYPES/socketTypes";
 import TokenUtil from "../../Util/Token";
 import { RedisPubSub } from "../../Util/Redis";
 import { subscribe } from "diagnostics_channel";
