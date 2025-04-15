@@ -7,6 +7,7 @@ import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
 import { JoinLobbyPacket, OPCodes, PromptPacket, SubmitPromptResponsePacket } from "../../TYPES/socketTypes";
 import { Submit } from "cloudflare/resources/brand-protection";
+import OpenAIClient from "../data/openaiclient";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -279,6 +280,21 @@ router.post("/add-answer", [
 
 
     if (lobby.rounds[lobby.rounds.length - 1].answers.length === lobby.users.length) {
+
+        // create ai answer
+        const aiAnswer = await OpenAIClient.generateResponse(lobby.rounds[lobby.rounds.length - 1].question.question);
+        console.log("AI answer: ", aiAnswer);
+        let aia: Answer = {
+            // generate id
+            id: lobbyManager.generateId(),
+            answer: aiAnswer,
+            user: lobby.aiUser,
+            question: lobby.rounds[lobby.rounds.length - 1].question,
+            lobbyId: lobby.id,
+        }
+
+        lobby.rounds[lobby.rounds.length - 1].answers.push(aia);
+
         redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
             op: OPCodes.ALL_ANSWERS,
             d: {
@@ -384,6 +400,7 @@ router.post("/submit-vote", [
     }));
 
     if (lobby.rounds[lobby.rounds.length - 1].votes.length === lobby.users.length) {
+
         redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
             op: OPCodes.ALL_VOTES,
             d: {

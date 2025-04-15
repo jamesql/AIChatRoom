@@ -18,8 +18,10 @@
 }
 
 .answers_container {
-    display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
     align-items: center;
@@ -30,8 +32,8 @@
 .answer_card {
     background-color: var(--charcoal);
     transition: all 0.3s ease-in-out;
-    min-height: 75px;
-    min-width: 250px;
+    height: 175px;
+    width: 250px;
     cursor: pointer;
     border-radius: 5px;
     display: flex;
@@ -40,12 +42,24 @@
     
 }
 
+.answer_card p {
+    /* fit into container then ellipse */
+    max-height:175px;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* wrap until end of div */
+    white-space: normal;
+    
+    
+}
+
 .answer_card:hover {
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     border-radius: 5px;
-    min-height: 75px;
-    min-width: 250px;
+    height: 175px;
+    width: 250px;
     /* Add ucla blue outline */
     outline: 2px solid var(--ucla-blue);
     outline-offset: -2px;
@@ -57,8 +71,8 @@
     background-color: darkgray;
     transition: all 0.3s ease-in-out;
 
-    min-height: 75px;
-    min-width: 250px;
+    height: 175px;
+    width: 250px;
     cursor: pointer;
     border-radius: 5px;
     transform: scale(0.95);

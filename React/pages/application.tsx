@@ -15,6 +15,7 @@ import WaitingElement from './waiting';
 import VotingDev from './voting_dev';
 import LoseComponent from './lose';
 import WinComponent from './win';
+import VotedOut from './votedOut';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -171,10 +172,23 @@ const Application: React.FC = () => {
                 }
 
                 // start next round
+                ApiClient.getInstance().startNextRound(accessToken, newLobby.id).then((res) => {
+                    console.log("Started next round");
+                }).catch((err) => {
+                    console.error(err);
+                });
+
 
             }, 10000);
         }
     }
+
+    const handleVotedOut: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+
+        setLocalStatus("voted_out");
+        
+    };
         
 
 
@@ -192,6 +206,7 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.SUBMIT_VOTE_RESPONSE, [handleVoteSubmitted]);
     listeners.set(OPCodes.ALL_VOTES, [handleAllVotesSubmitted]);
     listeners.set(OPCodes.VOTE_RESULT, [handleVoteResults]);
+    listeners.set(OPCodes.VOTED_OUT, [handleVotedOut]);
 
 
 
@@ -236,6 +251,10 @@ const Application: React.FC = () => {
 
             {lobby && lobby.status==="user_win" && (
                 <WinComponent />
+            )}
+
+            {lobby && localStatus === "voted_out" && (
+                <VotedOut />
             )}
 
 

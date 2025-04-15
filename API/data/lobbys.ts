@@ -1,6 +1,9 @@
 import AIUser from "../../TYPES/aiTypes";
 import {Answer, Lobby, Prompt, Vote} from "../../TYPES/lobbyTypes";
+import { OPCodes } from "../../TYPES/socketTypes";
 import User from "../../TYPES/userTypes";
+import { getRandomPrompt } from "./prompts";
+import { redisInstance } from "./redis";
 
 class LobbyManager {
     private static instance: LobbyManager;
@@ -86,7 +89,7 @@ class LobbyManager {
         lobby.inGame = true;
         const question: Prompt = {
             id: this.generateId(),
-            question: "What is your favorite color?",
+            question: getRandomPrompt(),
         };
        
         const newRound = {
@@ -214,7 +217,13 @@ class LobbyManager {
             // remove user from lobby 
             const userIndex = lobby.users.findIndex(u => u.id === winningAnswer.user.id);
             if (userIndex !== -1) {
-                lobby.users.splice(userIndex, 1);
+                const u = lobby.users.splice(userIndex, 1);
+                redisInstance.publish(`user:${u[0].id}:events`, JSON.stringify({
+                    op: OPCodes.VOTED_OUT,
+                    d: {
+
+                    }
+                }));
             }
             // check if AI won
             if (lobby.users.length === 1) {
@@ -236,7 +245,7 @@ class LobbyManager {
         lobby.inGame = true;
         const question: Prompt = {
             id: this.generateId(),
-            question: "What is your favorite color?",
+            question: getRandomPrompt(),
         };
        
         const newRound = {

@@ -5,12 +5,12 @@ import classes from '../styles/eogDev.module.css';
 
 
 // need to have a button to return to the main page directly under the sub header
-const LoseComponent: React.FC = () => {
+const VotedOut: React.FC = () => {
     return (
         <div className={classes.container}>
             <NavigationBar authButtons={false} />
             <main className={classes.main}>
-                <h1 className={classes.header}>The AI has Won!</h1>
+                <h1 className={classes.header}>You have been voted out!</h1>
                 <h5 className={classes.subHeader}>We are doomed after all.</h5>
             </main>
             <Footer/>
@@ -18,4 +18,4 @@ const LoseComponent: React.FC = () => {
     );
 };
 
-export default LoseComponent;
+export default VotedOut;
