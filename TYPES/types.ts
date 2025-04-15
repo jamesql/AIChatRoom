@@ -5,7 +5,7 @@ import * as Socket from './socketTypes';
 
 
 
-export {
+export type {
     User,
     AIUser,
     Lobby,
