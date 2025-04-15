@@ -2,7 +2,7 @@
 
 import { IncomingMessage } from "http";
 import * as ws from "ws";
-import { OPCodes } from "../../Types/socketTypes";
+import { OPCodes } from "../../TYPES/socketTypes";
 import { RedisPubSub } from "../../Util/Redis"; // Updated import
 
 // Incoming connection handler
