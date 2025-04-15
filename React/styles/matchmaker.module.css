@@ -79,6 +79,16 @@
     
 }
 
+.extras input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid var(--ucla-blue);
+    font-size: 16px;
+    color: var(--color-dark-gray);
+    transition: all 0.3s ease;
+}
+
 
 .active {
     background-color: black;
