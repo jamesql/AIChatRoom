@@ -16,9 +16,9 @@ const LobbyDev: React.FC<LobbyProps> = ({lobby, userId}) => {
     return (
         <div className={classes.container}>  
             <NavigationBar authButtons={false} />
-            <CurrentPlayers players={lobby.users} />
+            {lobby && (<CurrentPlayers players={lobby.users} />)}
     
-            {lobby.host.id === userId && (
+            {lobby && lobby.host.id === userId && (
                 <LobbyHostOptions lobbyId={lobby.id} />
             )}
 

@@ -25,7 +25,17 @@ const VotingDev: React.FC<VotingDevProps> = ({answers, userId}) => {
         ApiClient.getInstance().submitVote(accessToken, a.id, a.lobbyId);
     };
 
-
+    if (!answers) {
+        return (
+            <div>
+                <NavigationBar authButtons={false} />
+                <div className={classes.container}>
+                    <h1>Loading...</h1>
+                </div>
+                <Footer />
+            </div>
+        );
+    }
     answers = answers.filter((a) => a.user.id !== userId);
     return (
         <div>
