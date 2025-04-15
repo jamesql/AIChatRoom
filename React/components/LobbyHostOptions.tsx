@@ -23,7 +23,11 @@ const LobbyHostOptions: React.FC<LobbyHostOptionsProps> = ({ lobbyId }) => {
         }
 
         // call api
-        ApiClient.getInstance().startGame(accessToken, lobbyId);
+        ApiClient.getInstance().startGame(accessToken, lobbyId).catch((err) => {
+            if (err.response && err.response.status === 500) {
+                alert("You need a minimum of 2 players to start.");
+            }
+        });
     };
 
 
