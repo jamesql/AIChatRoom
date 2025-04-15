@@ -16,7 +16,6 @@ app.use(cors());
 app.use("/api", require("./routers/API"));
 app.use("/auth", require("./routers/Auth"));
 
-// port should change later, from env file
-app.listen(process.env.API_IP_ADDRESS, () => {
-  console.log(`[$api] API Server Started.`);
+app.listen(80, process.env.API_IP_ADDRESS, () => {
+  console.log(`[$api] API Server started on ${process.env.API_IP_ADDRESS}:80.`);
 });
