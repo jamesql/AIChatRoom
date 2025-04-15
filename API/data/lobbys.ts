@@ -21,7 +21,7 @@ class LobbyManager {
 
     public joinMatchmaking(User: User): Lobby {
         const newestLobby = LobbyManager.lobbys[LobbyManager.lobbys.length - 1];
-        if (newestLobby && newestLobby.users.length < this.MAX_PLAYERS && !newestLobby.inGame) {
+        if (newestLobby && newestLobby.users.length < this.MAX_PLAYERS && !newestLobby.inGame && !newestLobby.users.some(u => u.id === User.id)) {
             newestLobby.users.push(User);
             return newestLobby;
         }
