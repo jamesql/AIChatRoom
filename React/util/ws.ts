@@ -6,7 +6,7 @@ export class WebSocketClient {
 
     constructor() {
         // enviorment variable was being super weird idek
-        this.ws = new WebSocket(`ws://66.179.82.103:444`);
+        this.ws = new WebSocket(`wss://ws.jamesash.dev`);
         this.handlers = new Map();
 
         this.ws.onmessage = (event) => {
