@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/env": "^15.3.0",
     "aichatgame": "file:",
     "axios": "^1.8.4",
     "js-cookie": "^3.0.5",
