@@ -41,7 +41,7 @@ class LobbyManager {
 
     public joinLobby(User: User, lobbyId: string): Lobby | null {
         const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
-        if (!lobby || lobby.users.length >= this.MAX_PLAYERS || lobby.inGame) {
+        if (!lobby || lobby.users.length >= this.MAX_PLAYERS || lobby.inGame || lobby.users.some(u => u.id === User.id)) {
             return null;
         }
         lobby.users.push(User);
@@ -83,8 +83,8 @@ class LobbyManager {
 
     public startLobby(lobbyId: string, host: User): Lobby {
         const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
-        if (!lobby || lobby.host.id !== host.id || lobby.inGame) {
-            throw new Error("Cannot start the lobby");
+        if (!lobby || lobby.host.id !== host.id || lobby.inGame || lobby.users.length < 2) {
+            return null;
         }
         lobby.inGame = true;
         const question: Prompt = {
