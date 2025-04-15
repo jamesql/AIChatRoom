@@ -12,11 +12,8 @@ import * as ws from "ws";
 const server = http.createServer();
 const wss = new ws.Server({ server });
 
-const port = process.env.PORT || 80;
-const host = process.env.SOCKET_IP_ADDRESS || 'localhost';
-
-server.listen(port, () => {
-    console.log(`[$wss] Server is listening on ${host}:${port}`);
+server.listen(80, process.env.SOCKET_IP_ADDRESS, () => {
+    console.log(`[$wss] Server is listening on ${process.env.SOCKET_IP_ADDRESS}:80`);
 });
 
 wss.on("connection", require("./modules/connection").default.bind(null, wss));
