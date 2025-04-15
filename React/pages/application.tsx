@@ -23,7 +23,6 @@ const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
     const [loading, setLoading] = useState(true);
     const [userId, setUserId] = useState<string>("");
-    const [wsUrl, setWsUrl] = useState<string>(`wss://${process.env.REACT_WS_URL}:444`);
 
     // lobby detail stuff
     const [lobby, setLobby] = useState<Lobby | null>(null);
@@ -41,7 +40,6 @@ const Application: React.FC = () => {
         const accessToken = Cookies.get("accessToken");
         const refreshToken = Cookies.get("refreshToken");
 
-        setWsUrl(`wss://${process.env.REACT_WS_URL}:444`);
     
         if (!accessToken || !refreshToken) {
           // redirect to login page
@@ -219,7 +217,7 @@ const Application: React.FC = () => {
         return <div>Loading...</div>;
     } else return (
         <div>
-            <WebSocketComponent url={wsUrl} listeners={listeners}>
+            <WebSocketComponent listeners={listeners}>
 
 
             {!lobby && (

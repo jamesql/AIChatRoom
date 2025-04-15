@@ -3,7 +3,6 @@ import React, { useEffect, useRef, createContext } from 'react';
 import {WebSocketClient, OpCodeHandler} from "../util/ws";
 
 interface WebSocketProps {
-    url: string;
     listeners: Map<number, OpCodeHandler[]>;
     children?: React.ReactNode;
 }
@@ -12,14 +11,14 @@ interface WebSocketProps {
 export const WebSocketContext = createContext<WebSocketClient | null>(null);
 
 
-const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners, children }) => {
+const WebSocketComponent: React.FC<WebSocketProps> = ({ listeners, children }) => {
     const wsRef = useRef<WebSocketClient | null>(null);
 
 
     useEffect(() => {
         if (wsRef.current) return;
         
-        wsRef.current = new WebSocketClient(url);
+        wsRef.current = new WebSocketClient();
 
         for (const [opCode, handlers] of listeners.entries()) {
             handlers.forEach(handler => {
@@ -31,7 +30,7 @@ const WebSocketComponent: React.FC<WebSocketProps> = ({ url, listeners, children
         return () => {
 
         };
-    }, [url, listeners]);
+    }, [listeners]);
 
     return<>
         <WebSocketContext.Provider value={wsRef.current}>

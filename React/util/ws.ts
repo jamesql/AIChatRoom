@@ -4,8 +4,8 @@ export class WebSocketClient {
     private ws: WebSocket;
     private handlers: Map<number, OpCodeHandler[]>;
 
-    constructor(url: string) {
-        this.ws = new WebSocket(url);
+    constructor() {
+        this.ws = new WebSocket(`wss://${process.env.REACT_WS_URL}:444`);
         this.handlers = new Map();
 
         this.ws.onmessage = (event) => {
