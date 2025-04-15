@@ -8,7 +8,7 @@ class ApiClient {
     private baseUrl: string;
 
     constructor() {
-        this.baseUrl = process.env.REACT_API_URL || 'http://localhost:80';
+        this.baseUrl = process.env.REACT_API_URL || 'http://http://66.179.82.103:5001';
         this.axiosInstance = axios.create({
             baseURL: this.baseUrl,
             headers: {
