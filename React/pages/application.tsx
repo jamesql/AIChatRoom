@@ -214,7 +214,7 @@ const Application: React.FC = () => {
         return <div>Loading...</div>;
     } else return (
         <div>
-            <WebSocketComponent url={`ws://${process.env.REACT_WS_URL}:444`} listeners={listeners}>
+            <WebSocketComponent url={`wss://${process.env.REACT_WS_URL}:444`} listeners={listeners}>
 
 
             {!lobby && (
