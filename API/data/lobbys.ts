@@ -147,7 +147,7 @@ class LobbyManager {
         return lobby;
     }
 
-    public castVote(lobbyId: string, user: User, voteFor: Answer): Lobby | null {
+    public castVote(lobbyId: string, user: User, voteFor: string): Lobby | null {
         const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
         if (!lobby) {
             return null;
@@ -156,14 +156,17 @@ class LobbyManager {
         if (!round) {
             return null;
         }
+
+        let votedAnswer = round.answers.find(answer => answer.id === voteFor);
+
         const existingVote = round.votes.find(vote => vote.user.id === user.id);
         if (existingVote) {
-            existingVote.votesFor = voteFor;
+            existingVote.votesFor = votedAnswer;
             return lobby;
         }
         const vote: Vote = {
             id: this.generateId(),
-            votesFor: voteFor,
+            votesFor: votedAnswer,
             user,
         };
         round.votes.push(vote);
@@ -179,30 +182,52 @@ class LobbyManager {
         if (!round) {
             return null;
         }
+
+        const votes = round.votes;
         const voteCounts = new Map<string, number>();
-        round.votes.forEach(vote => {
-            if (voteCounts.has(vote.votesFor.id)) {
-                voteCounts.set(vote.votesFor.id, voteCounts.get(vote.votesFor.id)! + 1);
+        votes.forEach(vote => {
+            if (voteCounts.has(vote.votesFor.user.id)) {
+                voteCounts.set(vote.votesFor.user.id, voteCounts.get(vote.votesFor.user.id)! + 1);
             } else {
-                voteCounts.set(vote.votesFor.id, 1);
+                voteCounts.set(vote.votesFor.user.id, 1);
             }
         });
-        let maxVotes = 0;
-        let winningAnswer: Answer | null = null;
-        voteCounts.forEach((count, answerId) => {
-            if (count > maxVotes) {
-                maxVotes = count;
-                winningAnswer = round.answers.find(answer => answer.id === answerId) || null;
-            }
+        console.log(voteCounts);
+
+        const userWithMostVotes = Array.from(voteCounts.entries()).reduce((prev, current) => {
+            return (prev[1] > current[1]) ? prev : current;
         });
-        // remove user from lobby 
-        const userIndex = lobby.users.findIndex(u => u.id === user.id);
-        if (userIndex !== -1) {
-            lobby.users.splice(userIndex, 1);
+        const winningAnswer = round.answers.find(answer => answer.user.id === userWithMostVotes[0]);
+
+        if (!winningAnswer) {
+            if (userWithMostVotes[0] === lobby.aiUser.id) {
+                winningAnswer.user = lobby.aiUser;
+            }
         }
-        lobby.status = "next_round";
+
+        
+        
+        // Check if AI was voted out
+        if (winningAnswer.user.id === lobby.aiUser.id) {
+            lobby.status = "user_win";
+        } else {
+            // remove user from lobby 
+            const userIndex = lobby.users.findIndex(u => u.id === winningAnswer.user.id);
+            if (userIndex !== -1) {
+                lobby.users.splice(userIndex, 1);
+            }
+            // check if AI won
+            if (lobby.users.length === 1) {
+                lobby.status = "ai_win";
+            } else {
+                lobby.status = "next_round";
+            }
+        }
+
         return lobby;
     }
+
+    
 
 
     public generateId(): string {

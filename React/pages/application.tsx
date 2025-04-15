@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import WebSocketComponent from '@/components/WebSocket';
 import { OpCodeHandler, WebSocketClient } from '@/util/ws';
 import { OPCodes } from '../../TYPES/socketTypes';
-import { Lobby, LobbyStatus, Prompt } from '../../TYPES/lobbyTypes';
+import { Answer, Lobby, LobbyStatus, Prompt } from '../../TYPES/lobbyTypes';
 import Dashboard from './dashboard';
 import LobbyDev from './lobby_dev';
 import PromptDev from './prompt_dev';
@@ -23,6 +23,7 @@ const Application: React.FC = () => {
     const [lobby, setLobby] = useState<Lobby | null>(null);
     const [localStatus, setLocalStatus] = useState<LobbyStatus | null>(null);
     const [curPrompt, setPrompt] = useState<Prompt | null>(null);
+    const [curAnswers, setAnswers] = useState<Answer[] | null>(null);
 
     const handleLogout = () => {
         Cookies.remove("accessToken");
@@ -122,7 +123,42 @@ const Application: React.FC = () => {
         const newLobby = data.lobby;
         setLobby(newLobby);
         setLocalStatus("voting");
+
+        setAnswers(data.answers);
     };
+
+    const handleVoteSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+        setLocalStatus("waiting_voting");
+    }
+
+    const handleAllVotesSubmitted: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+
+        // make api request to end voting
+        const accessToken = Cookies.get("accessToken");
+        if (!accessToken) {
+            console.error("Access token not found");
+            return;
+        }
+
+        ApiClient.getInstance().endVoting(accessToken, newLobby.id).then((res) => {
+            console.log("Ended voting");
+        }).catch((err) => {
+            console.error(err);
+        });
+    }
+
+    const handleVoteResults: OpCodeHandler = async (data: any, client: WebSocketClient) => {
+        console.log("Received data:", data);
+        const newLobby = data.lobby;
+        setLobby(newLobby);
+        setLocalStatus(newLobby.status);
+    }
         
 
 
@@ -137,6 +173,9 @@ const Application: React.FC = () => {
     listeners.set(OPCodes.SUBMIT_PROMPT_RESPONSE, [handleAnswerSubmitted]);
     listeners.set(OPCodes.ALL_ANSWERS, [handleAllAnswersSubmitted]);
     listeners.set(OPCodes.BEGIN_VOTING, [handleBeginVoting]);
+    listeners.set(OPCodes.SUBMIT_VOTE_RESPONSE, [handleVoteSubmitted]);
+    listeners.set(OPCodes.ALL_VOTES, [handleAllVotesSubmitted]);
+    listeners.set(OPCodes.VOTE_RESULT, [handleVoteResults]);
 
 
 
@@ -163,8 +202,8 @@ const Application: React.FC = () => {
                 <WaitingElement header="Waiting for answers" />
             )}
 
-            {lobby && lobby.status==="voting" && localStatus==="voting" && (
-                <VotingDev />
+            {lobby && lobby.status==="voting" && localStatus==="voting" && curAnswers && (
+                <VotingDev answers={curAnswers} userId={userId}/>
             )}
 
             {lobby && lobby.status==="voting" && localStatus === "waiting_voting" && (

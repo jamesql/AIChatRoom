@@ -375,6 +375,23 @@ router.post("/submit-vote", [
         return;
     }
 
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.SUBMIT_VOTE_RESPONSE,
+        d: {
+            answerId: answerId,
+            lobby: lobby,
+        },
+    }));
+
+    if (lobby.rounds[lobby.rounds.length - 1].votes.length === lobby.users.length) {
+        redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
+            op: OPCodes.ALL_VOTES,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    }
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,
@@ -411,6 +428,16 @@ router.post("/end-voting", [
         res.status(500).json({ error: "Failed to end voting" });
         return;
     }
+
+    // send results to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.VOTE_RESULT,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    });
 
     // return the lobby information
     res.status(200).json({
