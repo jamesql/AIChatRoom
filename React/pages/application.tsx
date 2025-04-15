@@ -13,6 +13,8 @@ import LobbyDev from './lobby_dev';
 import PromptDev from './prompt_dev';
 import WaitingElement from './waiting';
 import VotingDev from './voting_dev';
+import LoseComponent from './lose';
+import WinComponent from './win';
 
 const Application: React.FC = () => {
     const [authed, setAuthed] = useState(false);
@@ -158,6 +160,20 @@ const Application: React.FC = () => {
         const newLobby = data.lobby;
         setLobby(newLobby);
         setLocalStatus(newLobby.status);
+
+        if (newLobby.status === "next_round") {
+            // wait 10 seconds then start next round
+            setTimeout(() => {
+                const accessToken = Cookies.get("accessToken");
+                if (!accessToken) {
+                    console.error("Access token not found");
+                    return;
+                }
+
+                // start next round
+
+            }, 10000);
+        }
     }
         
 
@@ -208,6 +224,18 @@ const Application: React.FC = () => {
 
             {lobby && lobby.status==="voting" && localStatus === "waiting_voting" && (
                 <WaitingElement header="Waiting for votes" />
+            )}
+
+            {lobby && lobby.status==="next_round" && (
+                <WaitingElement header="The imposter still remains..." />
+            )}
+
+            {lobby && lobby.status==="ai_win" && (
+                <LoseComponent />
+            )}
+
+            {lobby && lobby.status==="user_win" && (
+                <WinComponent />
             )}
 
 

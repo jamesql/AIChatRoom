@@ -227,6 +227,34 @@ class LobbyManager {
         return lobby;
     }
 
+
+    public startNewRound(lobbyId: string, userId: string): Lobby {
+        const lobby = LobbyManager.lobbys.find(lobby => lobby.id === lobbyId);
+        if (!lobby || lobby.host.id !== userId) {
+            throw new Error("Cannot start the lobby");
+        }
+        lobby.inGame = true;
+        const question: Prompt = {
+            id: this.generateId(),
+            question: "What is your favorite color?",
+        };
+       
+        const newRound = {
+            id: this.generateId(),
+            round: lobby.rounds.length + 1,
+            question,
+            answers: [],
+            lobbyId: lobby.id,
+            votes: [],
+        };
+
+
+        lobby.status = "prompt";
+
+        lobby.rounds.push(newRound);
+        return lobby;
+    } 
+
     
 
 

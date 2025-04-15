@@ -5,7 +5,7 @@ import classes from '../styles/eogDev.module.css';
 
 
 // need to have a button to return to the main page directly under the sub header
-const eogDev: React.FC = () => {
+const WinComponent: React.FC = () => {
     return (
         <div className={classes.container}>
             <NavigationBar authButtons={false} />
@@ -18,4 +18,4 @@ const eogDev: React.FC = () => {
     );
 };
 
-export default eogDev;
+export default WinComponent;

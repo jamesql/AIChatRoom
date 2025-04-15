@@ -445,6 +445,55 @@ router.post("/end-voting", [
     });
 });
 
+router.post("/start-new-round", [
+    header("Authorization").exists().withMessage("Authorization header is required"),
+    body("lobbyId").exists().withMessage("Lobby ID is required"),
+], async(req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+         res.status(400).json({ errors: errors.array() });
+         return;
+    }
+
+    const token = req.headers.authorization as string;
+    const result = await validateToken(token);
+    if (!result || !result.valid) {
+        res.status(401).json({ error: "Invalid token" });
+        return;
+    }
+
+    const userId = result.userId;
+    const user = await UserService.getUserById(userId);
+    if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+    }
+
+    const lobbyId = req.body.lobbyId;
+    const lobby = lobbyManager.startNewRound(lobbyId, user.id);
+    if (!lobby) {
+        res.status(500).json({ error: "Failed to start new round" });
+        return;
+    }
+
+    // send prompt to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.PROMPT,
+            d: {
+                prompt: lobby.rounds[lobby.rounds.length - 1].question,
+                lobby: lobby,
+            },
+        } as PromptPacket));
+    });
+
+    // return the lobby information
+    res.status(200).json({
+        lobby: lobby,
+    });
+});
+
+
 router.get("/getUserData", [
     header("Authorization").exists().withMessage("Authorization header is required"),
 ], async(req: Request, res: Response) => {
