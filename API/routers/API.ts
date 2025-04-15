@@ -7,6 +7,7 @@ import UserService from "../data/user";
 import LobbyManager from "../data/lobbys";
 import { JoinLobbyPacket, OPCodes, PromptPacket, SubmitPromptResponsePacket } from "../../TYPES/socketTypes";
 import { Submit } from "cloudflare/resources/brand-protection";
+import OpenAIClient from "../data/openaiclient";
 
 const router: Router = express.Router();
 const lobbyManager = LobbyManager.getInstance();
@@ -279,6 +280,21 @@ router.post("/add-answer", [
 
 
     if (lobby.rounds[lobby.rounds.length - 1].answers.length === lobby.users.length) {
+
+        // create ai answer
+        const aiAnswer = await OpenAIClient.generateResponse(lobby.rounds[lobby.rounds.length - 1].question.question);
+        console.log("AI answer: ", aiAnswer);
+        let aia: Answer = {
+            // generate id
+            id: lobbyManager.generateId(),
+            answer: aiAnswer,
+            user: lobby.aiUser,
+            question: lobby.rounds[lobby.rounds.length - 1].question,
+            lobbyId: lobby.id,
+        }
+
+        lobby.rounds[lobby.rounds.length - 1].answers.push(aia);
+
         redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
             op: OPCodes.ALL_ANSWERS,
             d: {
@@ -375,6 +391,24 @@ router.post("/submit-vote", [
         return;
     }
 
+    redisInstance.publish(`user:${userId}:events`, JSON.stringify({
+        op: OPCodes.SUBMIT_VOTE_RESPONSE,
+        d: {
+            answerId: answerId,
+            lobby: lobby,
+        },
+    }));
+
+    if (lobby.rounds[lobby.rounds.length - 1].votes.length === lobby.users.length) {
+
+        redisInstance.publish(`user:${lobby.host.id}:events`, JSON.stringify({
+            op: OPCodes.ALL_VOTES,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    }
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,
@@ -412,11 +446,70 @@ router.post("/end-voting", [
         return;
     }
 
+    // send results to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.VOTE_RESULT,
+            d: {
+                lobby: lobby,
+            }
+        }));
+    });
+
     // return the lobby information
     res.status(200).json({
         lobby: lobby,
     });
 });
+
+router.post("/start-new-round", [
+    header("Authorization").exists().withMessage("Authorization header is required"),
+    body("lobbyId").exists().withMessage("Lobby ID is required"),
+], async(req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+         res.status(400).json({ errors: errors.array() });
+         return;
+    }
+
+    const token = req.headers.authorization as string;
+    const result = await validateToken(token);
+    if (!result || !result.valid) {
+        res.status(401).json({ error: "Invalid token" });
+        return;
+    }
+
+    const userId = result.userId;
+    const user = await UserService.getUserById(userId);
+    if (!user) {
+        res.status(404).json({ error: "User not found" });
+        return;
+    }
+
+    const lobbyId = req.body.lobbyId;
+    const lobby = lobbyManager.startNewRound(lobbyId, user.id);
+    if (!lobby) {
+        res.status(500).json({ error: "Failed to start new round" });
+        return;
+    }
+
+    // send prompt to players
+    lobby.users.forEach((u) => {
+        redisInstance.publish(`user:${u.id}:events`, JSON.stringify({
+            op: OPCodes.PROMPT,
+            d: {
+                prompt: lobby.rounds[lobby.rounds.length - 1].question,
+                lobby: lobby,
+            },
+        } as PromptPacket));
+    });
+
+    // return the lobby information
+    res.status(200).json({
+        lobby: lobby,
+    });
+});
+
 
 router.get("/getUserData", [
     header("Authorization").exists().withMessage("Authorization header is required"),

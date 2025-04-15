@@ -1,7 +1,7 @@
 import AIUser from "./aiTypes";
 import User from "./userTypes";
 
-export type LobbyStatus = "lobby" | "prompt" | "waiting_answers" | "voting" | "waiting_voting" | "next_round" | "ai_win" | "user_win";
+export type LobbyStatus = "lobby" | "prompt" | "waiting_answers" | "voting" | "waiting_voting" | "next_round" | "ai_win" | "user_win" | "voted_out";
 
 export interface Prompt {
     id: string;

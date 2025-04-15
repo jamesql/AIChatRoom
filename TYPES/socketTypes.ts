@@ -28,6 +28,10 @@ export const OPCodes = {
     LOBBY_USER_LEAVE: 14,
     ALL_ANSWERS: 15,
     BEGIN_VOTING: 16,
+    SUBMIT_VOTE_RESPONSE: 18,
+    ALL_VOTES: 19,
+    VOTE_RESULT: 20,
+    VOTED_OUT: 21,
 };
 
 export type OPCode = typeof OPCodes[keyof typeof OPCodes];
